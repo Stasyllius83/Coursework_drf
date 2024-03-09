@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    serializers_class = UserSerializer
+    serializer_class = UserSerializer
     queryset = get_user_model().objects.all()
     perms_methods = {
         'create': [AllowAny],
@@ -22,11 +22,6 @@ class UserViewSet(viewsets.ModelViewSet):
         self.permission_classes = self.perms_methods.get(self.actions, self.permission_classes)
         return [permission() for permission in self.permission_classes]
 
-    def list(self, request):
-        queryset = User.objects.all()
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data)
-
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -38,13 +33,3 @@ class UserViewSet(viewsets.ModelViewSet):
         user.set_password(password)
         user.save()
         return Response(serializer.data, status=201, headers=headers)
-
-    def retrieve(self, request, *args, **kwargs):
-        if self.request.user == self.get_object() or self.request.user.is_superuser:
-            serializer_class = UserSerializer
-        else:
-            serializer_class = UserSerializer
-        serializer = serializer_class(self.get_object())
-        serializer_data = serializer.data
-
-        return Response(serializer_data)
