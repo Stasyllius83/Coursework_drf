@@ -5,7 +5,7 @@ from datetime import timedelta
 from habits.models import Habit
 
 
-class choose_related_habit_or_reward():
+class Choose_related_habit_or_reward():
 
     def __init__(self, field):
         self.field = field
@@ -17,7 +17,7 @@ class choose_related_habit_or_reward():
             raise serializers.ValidationError("Нельзя одновременно выбирать связанную привычку и указывать вознаграждение")
 
 
-class long_execution_time():
+class Long_execution_time():
 
     def __init__(self, field):
         self.field = field
@@ -28,7 +28,7 @@ class long_execution_time():
             raise serializers.ValidationError("Время выполнения должно быть не больше 120 секунд")
 
 
-class related_is_pleasant():
+class Related_is_pleasant():
 
     def __init__(self, field):
         self.field = field
@@ -41,23 +41,21 @@ class related_is_pleasant():
             raise serializers.ValidatorError("В связанные привычки могут попадать только привычки с признаком приятной привычки")
 
 
-class pleasant_format():
+class Pleasant_format():
 
     def __init__(self, field):
         self.field = field
 
     def __call__(self, value):
         sign_of_pleasant = value.get("sign_of_pleasant")
-        pleasant_habit = Habit.objects.filter(sign_of_pleasant=sign_of_pleasant)
-        print(pleasant_habit)
-        print(pleasant_habit.reward)
-        print(pleasant_habit.related_habit)
-        print(pleasant_habit.sign_of_pleasant)
-        if pleasant_habit.reward != None or pleasant_habit.related_habit != None:
-            raise serializers.ValidatorError("У приятной привычки не может быть вознаграждения или связанной привычки")
+        reward = value.get("reward")
+        related_habit = value.get("related_habit")
+        if sign_of_pleasant == True:
+            if reward or related_habit:
+                raise serializers.ValidatorError("У приятной привычки не может быть вознаграждения или связанной привычки")
 
 
-class completion_duration():
+class Completion_duration():
 
     def __init__(self, field):
         self.field = field
