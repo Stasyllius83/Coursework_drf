@@ -12,8 +12,10 @@ class HabitSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Дополнительная валидация для сериализатора"""
-        choose_related_habit_or_reward(data.get('related_habit'), data.get('reward'))
-        long_execution_time(data.get('time_to_complete'))
-        related_is_pleasant(data.get('related_habit'), data.get('sign_of_pleasant'))
-        pleasant_format(data.get('sign_of_pleasant'))
-        completion_duration(data.get('time_to_complete'))
+        choose_related_habit_or_reward(data)
+        long_execution_time(data)
+        related_is_pleasant(data)
+        pleasant_format(data)
+        completion_duration(data)
+
+        return data
