@@ -178,8 +178,8 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
-    'deactivate_user': {
-        'task': 'materials.tasks.deactivate_user',
+    'check_and_send_reminders': {
+        'task': 'habits.tasks.check_and_send_reminders',
         'schedule': timedelta(minutes=1),
     },
 }
