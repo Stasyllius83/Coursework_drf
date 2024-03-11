@@ -6,5 +6,8 @@ def send_telegram_message(chat_id, message, bot_token):
 
     #response = request.post(
     #    url=f"{URL}{bot_token}/sendMessage",
-
+    #   data={
+    #   'chat_id'=chat_id,
+    #   'text'=message
+    #}
     #)

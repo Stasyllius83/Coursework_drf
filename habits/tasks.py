@@ -26,4 +26,4 @@ def check_and_send_reminders():
                 message += f" Связанная привычка: {related_habit_action}."
 
             send_telegram_message(chat_id, message, bot_token)
-            # record_habit_completion(habit)
+        
