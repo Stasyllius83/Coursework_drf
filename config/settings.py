@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -182,9 +183,9 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
-    'check_and_send_reminders': {
+    'check_habits_daily': {
         'task': 'habits.tasks.check_and_send_reminders',
-        'schedule': timedelta(minutes=1),
+        'schedule': crontab(hour=18, minute=59), # every day at 8am
     },
 }
 

@@ -4,10 +4,9 @@ from datetime import datetime, timedelta
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 from habits.models import Habit
 
-def create_interval(habit):
-    """
-    Создаем интервал для повтора
-    """
+""" def create_interval(habit):
+    # Создаем интервал для повтора
+
     schedule, created = IntervalSchedule.objects.get_or_create(
         every=habit.periodicity,
         period=IntervalSchedule.DAYS,
@@ -15,9 +14,8 @@ def create_interval(habit):
     return schedule
 
 def create_habit_schedule(habit):
-    """
-    Создаем задачу для повторения
-    """
+    # Создаем задачу для повторения
+
     PeriodicTask.objects.create(
         interval=create_interval(habit),
         name='Check_and_send_reminders',
@@ -28,6 +26,7 @@ def create_habit_schedule(habit):
         }),
         expires=datetime.utcnow() + timedelta(seconds=30)
  )
+ """
 
 
 def send_telegram_message(chat_id, message, bot_token):
