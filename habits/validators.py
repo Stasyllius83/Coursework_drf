@@ -1,64 +1,44 @@
 
 from rest_framework import serializers
 from datetime import timedelta
-from habits.models import Habit
+from rest_framework.serializers import ValidationError
 
 
-class Choose_related_habit_or_reward():
+def choose_related_habit_or_reward(value):
 
-    def __init__(self, field):
-        self.field = field
-
-    def __call__(self, value):
-        related_habit = value.get("related_habit")
-        reward = value.get("reward")
-        if related_habit and reward:
-            raise serializers.ValidationError("Нельзя одновременно выбирать связанную привычку и указывать вознаграждение")
+    related_habit = value["related_habit"]
+    reward = value["reward"]
+    if related_habit and reward:
+        raise serializers.ValidationError("Нельзя одновременно выбирать связанную привычку и указывать вознаграждение")
 
 
-class Long_execution_time():
+def long_execution_time(value):
+    time = timedelta(minutes=2)
 
-    def __init__(self, field):
-        self.field = field
-
-    def __call__(self, value):
-        time_to_complete = value.get('time_to_complete')
-        if time_to_complete > timedelta(minutes=120):
-            raise serializers.ValidationError("Время выполнения должно быть не больше 120 секунд")
+    time_to_complete = value['time_to_complete']
+    if time_to_complete > time:
+        raise serializers.ValidationError("Время выполнения должно быть не больше 120 секунд")
 
 
-class Related_is_pleasant():
+def related_is_pleasant(value):
 
-    def __init__(self, field):
-        self.field = field
-
-    def __call__(self, value):
-        related_habit = value.get("related_habit")
-        related_habit_obj = Habit.objects.filter(habit_id=related_habit)
-        if related_habit_obj.sign_of_pleasant == False:
-            raise serializers.ValidatorError("В связанные привычки могут попадать только привычки с признаком приятной привычки")
+    if value["related_habit"]:
+        if not value["related_habit"].sign_of_pleasant:
+            raise serializers.ValidationError("В связанные привычки могут попадать только привычки с признаком приятной привычки")
 
 
-class Pleasant_format():
+def pleasant_format(value):
 
-    def __init__(self, field):
-        self.field = field
-
-    def __call__(self, value):
-        sign_of_pleasant = value.get("sign_of_pleasant")
-        reward = value.get("reward")
-        related_habit = value.get("related_habit")
-        if sign_of_pleasant:
-            if reward or related_habit:
-                raise serializers.ValidatorError("У приятной привычки не может быть вознаграждения или связанной привычки")
+    sign_of_pleasant = value["sign_of_pleasant"]
+    reward = value["reward"]
+    related_habit = value["related_habit"]
+    if sign_of_pleasant:
+        if reward or related_habit:
+            raise serializers.ValidationError("У приятной привычки не может быть вознаграждения или связанной привычки")
 
 
-class Completion_duration():
+def completion_duration(value):
 
-    def __init__(self, field):
-        self.field = field
-
-    def __call__(self, value):
-        time_to_complete = value.get("time_to_complete")
-        if 0 <= time_to_complete >= 7:
-            raise serializers.ValidatorError("Нельзя выполнять привычку реже, чем 1 раз в 7 дней")
+    periodicity = value["periodicity"]
+    if periodicity > 7:
+        raise serializers.ValidationError("Нельзя выполнять привычку реже, чем 1 раз в 7 дней")

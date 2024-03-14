@@ -6,6 +6,7 @@ from habits.serializers import HabitSerializer
 
 
 class HabitCreateAPIView(generics.CreateAPIView):
+    """ Создание привычки """
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = [IsAuthenticated]
