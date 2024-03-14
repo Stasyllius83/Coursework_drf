@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -156,10 +157,14 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',  # Замените на адрес вашего фронтенд-сервера
+    "http://127.0.0.1:8000",
+    "https://read-only.example.com",
+    "https://read-and-write.example.com",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+CSRF_TRUSTED_ORIGINS = [
+    "https://read-and-write.example.com",
+]
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -178,8 +183,10 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
-    'check_and_send_reminders': {
+    'check_habits_daily': {
         'task': 'habits.tasks.check_and_send_reminders',
-        'schedule': timedelta(minutes=1),
+        'schedule': crontab(hour=18, minute=59), # every day at 8am
     },
 }
+
+TELEGRAM_API_TOKEN = '7045312078:AAE330pdFmnw_jKBMLkrLl9ICG9l4u11rrQ'
