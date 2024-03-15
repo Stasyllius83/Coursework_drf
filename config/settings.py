@@ -185,7 +185,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_BEAT_SCHEDULE = {
     'check_habits_daily': {
         'task': 'habits.tasks.check_and_send_reminders',
-        'schedule': crontab(hour=18, minute=59), # every day at 8am
+        'schedule': timedelta(minutes=1),
     },
 }
 
