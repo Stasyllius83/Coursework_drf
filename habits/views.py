@@ -46,6 +46,20 @@ class OwnerHabitListAPIView(generics.ListAPIView):
 
 
 class HabitRetrieveView(generics.RetrieveAPIView):
+    """Просмотр привычки по ID"""
     serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
+    permission_classes = [IsAuthenticated, IsOwner]
+
+
+class HabitUpdateView(generics.UpdateAPIView):
+    """Редактирование привычки"""
+    serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
+    permission_classes = [IsAuthenticated, IsOwner]
+
+
+class HabitDestroyView(generics.DestroyAPIView):
+    """Удаление привычки"""
     queryset = Habit.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
