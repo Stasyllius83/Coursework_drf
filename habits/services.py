@@ -1,8 +1,5 @@
 import requests
-import json
-from datetime import datetime, timedelta
-from django_celery_beat.models import PeriodicTask, IntervalSchedule
-from habits.models import Habit
+
 
 """ def create_interval(habit):
     # Создаем интервал для повтора
