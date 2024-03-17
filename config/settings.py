@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
-from celery.schedules import crontab
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -189,4 +189,4 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-TELEGRAM_API_TOKEN = '7045312078:AAE330pdFmnw_jKBMLkrLl9ICG9l4u11rrQ'
+TELEGRAM_API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
