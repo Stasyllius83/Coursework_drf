@@ -50,7 +50,7 @@ class HabitTestCase(APITestCase):
     def test_create_habit(self):
         """Тестирование создания привычки"""
         data = {
-                "owner": "1",
+                "owner": self.user.pk,
                 "place": "Спортивная площадка",
                 "time": "10:10",
                 "action": "Пробежка",
@@ -77,9 +77,9 @@ class HabitTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()['results'], [{'action': 'Пробежка',
-                                                        'id': 2,
+                                                        'id': self.good_habit.id,
                                                         'is_published': True,
-                                                        'owner': 1,
+                                                        'owner': self.user.id,
                                                         'periodicity': 2,
                                                         'place': 'Спортивная площадка',
                                                         'related_habit': None,
@@ -97,9 +97,9 @@ class HabitTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()['results'], [{'action': 'Сьесть десерт',
-                                                        'id': 1,
+                                                        'id': self.nice_habit.id,
                                                         'is_published': True,
-                                                        'owner': 1,
+                                                        'owner': self.user.id,
                                                         'periodicity': 7,
                                                         'place': 'None',
                                                         'related_habit': None,
@@ -134,11 +134,11 @@ class HabitTestCase(APITestCase):
             "periodicity": 7,
             "reward": "",
             "time_to_complete": "00:01:30",
-            "related_habit": "1"
+            "related_habit": self.nice_habit.id
         }
 
         response = self.client.patch(
-            reverse('habits:habit-update', args=[self.nice_habit.id]), updated_data
+            reverse('habits:habit-update', args=[self.good_habit.id]), updated_data
         )
 
         self.nice_habit.refresh_from_db()
@@ -200,13 +200,13 @@ class HabitTestCaseValidationError(APITestCase):
     def test_create_habit_with_related_habit_or_reward(self):
         """Тестирование создания привычки при одновременном указании награды и связанной привычки"""
         data = {
-                "owner": "1",
+                "owner": self.user.id,
                 "place": "Спортивная площадка",
                 "time": "10:10",
                 "action": "Пробежка",
                 "sign_of_pleasant": "False",
                 "periodicity": "2",
-                "related_habit": "1",
+                "related_habit": self.nice_habit.id,
                 "reward": "Отдых",
                 "time_to_complete": "0:01:30",
                 "is_published": "True"
@@ -223,13 +223,13 @@ class HabitTestCaseValidationError(APITestCase):
     def test_create_habit_with_long_execution_time(self):
         """Тестирование создания привычки при указании времени выполнения больше 120 секунд"""
         data = {
-                "owner": "1",
+                "owner": self.user.id,
                 "place": "Спортивная площадка",
                 "time": "10:10",
                 "action": "Пробежка",
                 "sign_of_pleasant": "False",
                 "periodicity": "2",
-                "related_habit": "1",
+                "related_habit": self.nice_habit.id,
                 "reward": "",
                 "time_to_complete": "0:02:30",
                 "is_published": "True"
@@ -246,13 +246,13 @@ class HabitTestCaseValidationError(APITestCase):
     def test_create_related_habit_with_pleasant(self):
         """Тестирование создания связанной привычки с признаком приятной"""
         data = {
-                "owner": "1",
+                "owner": self.user.id,
                 "place": "Спортивная площадка",
                 "time": "10:10",
                 "action": "Пробежка",
                 "sign_of_pleasant": "False",
                 "periodicity": "2",
-                "related_habit": "2",
+                "related_habit": self.good_habit.id,
                 "reward": "",
                 "time_to_complete": "0:01:30",
                 "is_published": "True"
@@ -269,7 +269,7 @@ class HabitTestCaseValidationError(APITestCase):
     def test_create_pleasant_habit_with_reward_or_related(self):
         """Тестирование создания приятной привычки с вознаграждением или со связанной привычкой"""
         data = {
-                "owner": "1",
+                "owner": self.user.id,
                 "place": "None",
                 "time": "10:10",
                 "action": "Сьесть десерт",
@@ -292,7 +292,7 @@ class HabitTestCaseValidationError(APITestCase):
     def test_create_habit_with_long_duration(self):
         """Тестирование создания привычки с периодом выполнения больше недели"""
         data = {
-                "owner": "1",
+                "owner": self.user.id,
                 "place": "Спортивная площадка",
                 "time": "10:10",
                 "action": "Пробежка",
@@ -308,6 +308,6 @@ class HabitTestCaseValidationError(APITestCase):
             reverse('habits:habit-create'),
             data=data
         )
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json(), {'non_field_errors': ['Нельзя выполнять привычку реже, чем 1 раз в 7 дней']})
