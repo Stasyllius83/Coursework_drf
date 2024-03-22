@@ -93,7 +93,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASS')
+        'PASSWORD': os.getenv('DB_PASS'),
+        'HOST': 'db',
     }
 }
 
@@ -157,7 +158,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",
+    "http://localhost:8000",
     "https://read-only.example.com",
     "https://read-and-write.example.com",
 ]
@@ -179,8 +180,8 @@ SWAGGER_SETTINGS = {
     }
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
     'check_habits_daily': {
