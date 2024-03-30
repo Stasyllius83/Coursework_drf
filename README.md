@@ -25,14 +25,22 @@
 
 1. Для запуска приложения нужно нужно установить и запустить на локальном или удаленном компьютере Docker.
 2. Клонировать репозиторий.
-3. Установить виртуальное окружение: python -m venv env
-4. Запустить виртуальное окружение: env\Scripts\activate.bat
+3. Установить виртуальное окружение:
+python -m venv env
+4. Запустить виртуальное окружение:
+env\Scripts\activate.bat
 5. Создать телеграм бота через бота BotFather. Кликнуть на команду в чате бота /newbot, ввести имя бота и пользователя бота.
-6. Создать и запустить контейнеры приложений в Docker: docker compose up --build.
+6. Создать и запустить контейнеры приложений в Docker:
+docker compose up --build.
 7. Если возникнут проблемы из-за отсутствия базы данных внутри контейнера Docker, то по отдельности в терминал вводим команды:
-    - создание контейнеров: docker compose build
-    - запуск контейнеров: docker compose up
-    - в новом терминале создаем базу данных внутри контейнера Docker через shell команду: docker-compose exec db psql -U postgres
-    - create database coursework_drf;
-    - \q
-    - перезапускаем контейнеры докер: docker compose down, docker compose up
+    - создание контейнеров:
+    docker compose build
+    - запуск контейнеров:
+    docker compose up
+    - в новом терминале создаем базу данных внутри контейнера Docker через shell команду:
+    docker-compose exec db psql -U postgres
+    create database coursework_drf;
+    \q
+    - перезапускаем контейнеры докер:
+    docker compose down
+    docker compose up
