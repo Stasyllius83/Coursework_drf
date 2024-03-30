@@ -16,10 +16,6 @@ jobs:
         python-version: [3.10.12]
 
     services:
-      app:
-        env:
-          SECRET_KEY: ${{ secrets.DJANGO_KEY }}
-          TELEGRAM_API_TOKEN: ${{ secrets.TELEGRAM_API_TOKEN }}
     
       postgres:
         image: postgres
@@ -27,6 +23,8 @@ jobs:
           POSTGRES_NAME: ${{ secrets.DB_NAME }}
           POSTGRES_USER: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
+          SECRET_KEY: ${{ secrets.DJANGO_KEY }}
+          TELEGRAM_API_TOKEN: ${{ secrets.TELEGRAM_API_TOKEN }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
