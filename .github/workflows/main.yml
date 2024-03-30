@@ -18,7 +18,8 @@ jobs:
     services:
       app:
         env:
-          POSTGRES_USER: ${{ secrets.DJANGO_KEY }}
+          SECRET_KEY: ${{ secrets.DJANGO_KEY }}
+          TELEGRAM_API_TOKEN: ${{ secrets.TELEGRAM_API_TOKEN }}
     
       postgres:
         image: postgres
