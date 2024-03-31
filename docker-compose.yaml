@@ -3,6 +3,7 @@ version: '3'
 services:
   db:
     image: postgres
+    command: ["postgres", "-c", "name=coursework_drf"]
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
