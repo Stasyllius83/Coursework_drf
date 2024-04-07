@@ -49,4 +49,4 @@ services:
       - redis
 
 volumes:
-  pg_data:
+  postgres_data:
